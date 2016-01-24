@@ -18,16 +18,18 @@ public class ConfigurationCounting {
 
         HashMap<String, Integer> configList = createConfigs(numOfChannels, numOfNodes);
 
-        int sum = 0;
-        for (String set : configList.keySet()) {
-            int holder = configList.get(set);
-            sum += holder;
-            if (holder > 1) {
-                System.out.println(holder + " sets with occupancies: " + set);
+        configList.forEach((layout, occurrence) -> {
+            if (occurrence > 1) {
+                System.out.println(occurrence + " sets with occupancies: " + layout);
             }
             else {
-                System.out.println(holder + " set  with occupancies: " + set);
+                System.out.println(occurrence + " set  with occupancies: " + layout);
             }
+        });
+
+        int sum = 0;
+        for (Integer set : configList.values()) {
+            sum += set;
         }
         System.out.println("Total number of assignments: " + sum);
     }
@@ -58,10 +60,10 @@ public class ConfigurationCounting {
             /* This is a valid configuration, add it to the list. */
             String holder = Arrays.toString(currentLayout);
             if (!list.containsKey(holder)) {
-                list.put(holder, 1);
+                list.put(holder, 1); /* This configuration layout has never been seen before, so create it. */
             }
             else {
-                list.replace(holder, list.get(holder) + 1);
+                list.replace(holder, list.get(holder) + 1); /* This layout has been seen before, so just increment it. */
             }
         }
         else { /* There's still nodes left to assign. */
@@ -78,4 +80,3 @@ public class ConfigurationCounting {
         }
     }
 }
-

@@ -10,7 +10,7 @@ public class ConfigurationCounting {
      * This is the method used to generate a list of all the possible configurations.
      * @param numOfChannels This is the number of channels.
      * @param numOfNodes This is the number of nodes.
-     * @return
+     * @return ArrayList<int[]> This is an ArrayList containing an int[] of each possible configurations.
      */
     public static ArrayList<int[]> createConfigs(int numOfChannels, int numOfNodes) {
         if(numOfChannels <= 0) {

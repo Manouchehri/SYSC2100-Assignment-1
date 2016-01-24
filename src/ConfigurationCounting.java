@@ -37,7 +37,7 @@ public class ConfigurationCounting {
      *
      * @param numOfChannels This is the number of channels.
      * @param numOfNodes    This is the number of nodes.
-     * @return
+     * @return This returns a HashMap<String, Integer> containing a string representation of the channels and number of times they occur.
      */
     public static HashMap<String, Integer> createConfigs(int numOfChannels, int numOfNodes) {
         if (numOfChannels <= 0) { /* This won't happen with the current user input, but since the method is public, it should be able to handle out of range numbers gracefully. */

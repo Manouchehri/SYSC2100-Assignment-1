@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -77,11 +78,7 @@ public class ConfigurationCounting {
     public static HashMap<String, Integer> createUniqueList(ArrayList<int[]> list) {
         HashMap<String, Integer> uniqueList = new HashMap<>();
         for(int[] set : list) {
-            String holder = "";
-            for(int value : set) {
-                holder += value + " ";
-            }
-            holder.trim();
+            String holder = Arrays.toString(set);
             if(!uniqueList.containsKey(holder)) {
                 uniqueList.put(holder, 1);
             }

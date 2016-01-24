@@ -1,8 +1,21 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ConfigurationCounting {
     public static void main(String[] args) {
-        ArrayList<int[]> configList = createConfigs(3, 3);
+        Scanner userInput = new Scanner(System.in);
+        int numOfChannels = 0;
+        while(numOfChannels <= 0) { /* Force the user to enter a number greater than 0. */
+            System.out.print("Enter the number of channels: ");
+            numOfChannels = userInput.nextInt();
+        }
+        int numOfNodes = 0;
+        while(numOfNodes <= 0) {
+            System.out.print("Enter the number of nodes: ");
+            numOfNodes = userInput.nextInt();
+        }
+
+        ArrayList<int[]> configList = createConfigs(numOfChannels, numOfNodes);
         System.out.println("Total number of assignments: " + configList.size());
     }
 
@@ -13,7 +26,7 @@ public class ConfigurationCounting {
      * @return ArrayList<int[]> This is an ArrayList containing an int[] of each possible configurations.
      */
     public static ArrayList<int[]> createConfigs(int numOfChannels, int numOfNodes) {
-        if(numOfChannels <= 0) {
+        if(numOfChannels <= 0) { /* This won't happen with the current user input, but since the method is public, it should be able to handle out of range numbers gracefully. */
             throw new IndexOutOfBoundsException("Number of channels must be greater than 0.");
         }
         else if(numOfNodes <= 0) {

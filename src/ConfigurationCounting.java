@@ -4,12 +4,12 @@ import java.util.Scanner;
 public class ConfigurationCounting {
     public static void main(String[] args) {
         Scanner userInput = new Scanner(System.in);
-        int numOfChannels = 0;
+        int numOfChannels = 3;
         while(numOfChannels <= 0) { /* Force the user to enter a number greater than 0. */
             System.out.print("Enter the number of channels: ");
             numOfChannels = userInput.nextInt();
         }
-        int numOfNodes = 0;
+        int numOfNodes = 3;
         while(numOfNodes <= 0) {
             System.out.print("Enter the number of nodes: ");
             numOfNodes = userInput.nextInt();

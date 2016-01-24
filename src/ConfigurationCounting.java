@@ -6,10 +6,24 @@ public class ConfigurationCounting {
         System.out.println("Total number of assignments: " + configList.size());
     }
 
-    private static ArrayList<int[]> createConfigs(int numOfChannels, int numOfNodes) {
-        ArrayList<int[]> configList = new ArrayList<>();
-        createConfigs(numOfChannels, numOfNodes, 0, new int[numOfChannels], configList);
-        return configList;
+    /**
+     * This is the method used to generate a list of all the possible configurations.
+     * @param numOfChannels This is the number of channels.
+     * @param numOfNodes This is the number of nodes.
+     * @return
+     */
+    public static ArrayList<int[]> createConfigs(int numOfChannels, int numOfNodes) {
+        if(numOfChannels <= 0) {
+            throw new IndexOutOfBoundsException("Number of channels must be greater than 0.");
+        }
+        else if(numOfNodes <= 0) {
+            throw new IndexOutOfBoundsException("Number of nodes must be greater than 0.");
+        }
+        else {
+            ArrayList<int[]> configList = new ArrayList<>();
+            createConfigs(numOfChannels, numOfNodes, 0, new int[numOfChannels], configList);
+            return configList;
+        }
     }
 
     private static void createConfigs(int numOfChannels, int numOfNodes, int currentChannel, int[] currentLayout, ArrayList<int[]> list) {

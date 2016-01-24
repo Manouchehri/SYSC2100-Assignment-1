@@ -20,6 +20,15 @@ public class ConfigurationCounting {
         System.out.println("Total number of assignments: " + configList.size());
 
         HashMap<String, Integer> uniqueList = createUniqueList(configList);
+        for(String set: uniqueList.keySet()) {
+            int holder = uniqueList.get(set);
+            if(holder > 1) {
+                System.out.println(holder + " sets with occupancies: " + set);
+            }
+            else {
+                System.out.println(holder + " set  with occupancies: " + set);
+            }
+        }
     }
 
     /**
@@ -60,6 +69,11 @@ public class ConfigurationCounting {
         }
     }
 
+    /**
+     * This is the method used to create a list of all unique configuration layouts.
+     * @param list This is the ArrayList containing int arrays of each configuration.
+     * @return HashMap<String, Integer> This contains a string representation of the channel configuration and the frequency.
+     */
     public static HashMap<String, Integer> createUniqueList(ArrayList<int[]> list) {
         HashMap<String, Integer> uniqueList = new HashMap<>();
         for(int[] set : list) {
@@ -67,6 +81,7 @@ public class ConfigurationCounting {
             for(int value : set) {
                 holder += value + " ";
             }
+            holder.trim();
             if(!uniqueList.containsKey(holder)) {
                 uniqueList.put(holder, 1);
             }

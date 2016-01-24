@@ -12,8 +12,10 @@ public class ConfigurationCounting {
     private static int init(int nodes, int channels) {
         int[] distribution = new int[channels];
         distribution[distribution.length - 1] = channels;
-        System.out.println(arrayPrint(distribution));
-        System.out.println(arrayPrint(removeZeros(distribution)));
+        //System.out.println(arrayPrint(distribution));
+        System.out.println("1 == " + perm(removeZeros(new int[] {0, 0, 3})));
+        System.out.println("3 == " + perm(removeZeros(new int[] {0, 1, 2})));
+        System.out.println("6 == " + perm(removeZeros(new int[] {1, 1, 1})));
         //combos(channels, channels, nodes, 0, distribution);
         return 0;
     }
@@ -40,9 +42,9 @@ public class ConfigurationCounting {
         return returner;
     }
     
-    private static int permutations(int[] distribution) {
+    private static int perm(int[] array) {
         // Base case
-        if(distribution.length <= 1) {
+        if(array.length <= 1) {
             return 1;
         }
         else {

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class ConfigurationCounting {
@@ -17,6 +18,8 @@ public class ConfigurationCounting {
 
         ArrayList<int[]> configList = createConfigs(numOfChannels, numOfNodes);
         System.out.println("Total number of assignments: " + configList.size());
+
+        HashMap<String, Integer> uniqueList = createUniqueList(configList);
     }
 
     /**
@@ -55,5 +58,22 @@ public class ConfigurationCounting {
             }
             createConfigs(numOfChannels, --numOfNodes, 0, testLayout, list); /* testLayout might be valid, continue to check. */
         }
+    }
+
+    public static HashMap<String, Integer> createUniqueList(ArrayList<int[]> list) {
+        HashMap<String, Integer> uniqueList = new HashMap<>();
+        for(int[] set : list) {
+            String holder = "";
+            for(int value : set) {
+                holder += value + " ";
+            }
+            if(!uniqueList.containsKey(holder)) {
+                uniqueList.put(holder, 1);
+            }
+            else {
+                uniqueList.replace(holder, uniqueList.get(holder) + 1);
+            }
+        }
+        return uniqueList;
     }
 }

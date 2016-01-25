@@ -6,25 +6,18 @@ public class ConfigurationCounting {
     public static void main(String[] args) {
         Scanner userInput = new Scanner(System.in);
 
-        int numOfNodes = 0;
+        int numOfNodes = 3;
         while (numOfNodes <= 0) { /* Force the user to enter a number greater than 0. */
             System.out.print("Enter the number of nodes: ");
             numOfNodes = userInput.nextInt();
         }
-        int numOfChannels = 0;
+        int numOfChannels = 3;
         while (numOfChannels <= 0) {
             System.out.print("Enter the number of channels: ");
             numOfChannels = userInput.nextInt();
         }
 
         HashMap<String, Integer> configList = createConfigs(numOfChannels, numOfNodes);
-
-        configList.forEach((layout, occurrence) -> {
-            if (occurrence > 1)
-                System.out.println(occurrence + " sets with occupancies: " + layout);
-            else
-                System.out.println(occurrence + " set with occupancies: " + layout);
-        });
 
         int sum = 0;
         for (Integer set : configList.values())
@@ -46,25 +39,37 @@ public class ConfigurationCounting {
             throw new IndexOutOfBoundsException("Number of nodes must be greater than 0.");
 
         HashMap<String, Integer> configList = new HashMap<>();
-        createConfigs(numOfChannels, 0, numOfNodes, new int[numOfChannels], configList);
+        createConfigs(numOfChannels, 0, numOfNodes, numOfNodes, new int[numOfChannels], configList);
         return configList;
     }
-
-    private static void createConfigs(int numOfChannels, int currentChannel, int numOfNodes, int[] currentNodeLayout, HashMap<String, Integer> list) {
-        if (numOfNodes <= 0) { /* Have all the nodes been assigned yet? */
-            String holder = Arrays.toString(currentNodeLayout); /* This is a valid configuration, add it to the list. */
-            if (!list.containsKey(holder))
-                list.put(holder, 1); /* This configuration layout has never been seen before, so create it. */
-            else
-                list.replace(holder, list.get(holder) + 1); /* This layout has been seen before, so just increment it. */
+    
+    private static void createConfigs(int numOfChannels, int currentChannel, int numOfNodes, int numOfNodesLeft, int[] currentNodeLayout, HashMap<String, Integer> list) {
+        if (numOfNodesLeft <= 0) { /* Have all the nodes been assigned yet? */
+            int numOfOccupanciedChannels = 0;
+            for(int x: currentNodeLayout)
+                if(x > 0)
+                    numOfOccupanciedChannels++;
+            
+            String currentNodeLayoutString = Arrays.toString(currentNodeLayout);
+            
+            if(!list.containsKey(currentNodeLayoutString)) { /* If we've already seen this config don't bother doing math. */
+                int numberOfConfigs = 0;
+                if(numOfOccupanciedChannels == 1) /* Base case. */
+                    numberOfConfigs = 1;
+                else
+                    numberOfConfigs = (numOfOccupanciedChannels - 1) * numOfNodes;
+                
+                System.out.println(numberOfConfigs + " set(s) with occupancies: " + currentNodeLayoutString);
+                list.put(currentNodeLayoutString, numberOfConfigs);
+            }
         }
         else { /* There's still nodes left to assign. */
             int[] testLayout = new int[currentNodeLayout.length]; /* Create a holder array. */
             System.arraycopy(currentNodeLayout, 0, testLayout, 0, currentNodeLayout.length); /* Copy the array. */
             if (currentChannel < numOfChannels) { /* Have we gone beyond the number of channels left? */
                 testLayout[currentChannel]++; /* Add a node to the current channel. */
-                createConfigs(numOfChannels, ++currentChannel, numOfNodes, currentNodeLayout, list); /* Branch out to the next channel. */
-                createConfigs(numOfChannels, 0, --numOfNodes, testLayout, list); /* Continue with the current node assignment. */
+                createConfigs(numOfChannels, ++currentChannel, numOfNodes,   numOfNodesLeft, currentNodeLayout, list); /* Branch out to the next channel. */
+                createConfigs(numOfChannels, 0,                numOfNodes, --numOfNodesLeft, testLayout,        list); /* Continue with the current node assignment. */
             }
         }
     }

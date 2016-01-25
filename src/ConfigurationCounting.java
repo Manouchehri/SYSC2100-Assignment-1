@@ -23,7 +23,7 @@ public class ConfigurationCounting {
                 System.out.println(occurrence + " sets with occupancies: " + layout);
             }
             else {
-                System.out.println(occurrence + " set  with occupancies: " + layout);
+                System.out.println(occurrence + " set with occupancies: " + layout);
             }
         });
 

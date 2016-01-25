@@ -1,1 +1,1 @@
-<placeholder>
+This assignment was not fun.

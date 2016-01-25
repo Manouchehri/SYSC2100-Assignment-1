@@ -75,16 +75,4 @@ public class ConfigurationCounting {
             createConfigs(numOfChannels, --numOfNodes, 0, testLayout, list); /* testLayout might be valid, continue to check. */
         }
     }
-
-    private static int binomial(int n, int k) {
-        if(n == 0 && k == 0) {
-            return 1;
-        }
-        else if(n < 0 || k < 0) {
-            return 0;
-        }
-        else {
-            return binomial(n - 1, k) + binomial(n - 1, k - 1);
-        }
-    }
 }

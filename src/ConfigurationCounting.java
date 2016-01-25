@@ -27,11 +27,7 @@ public class ConfigurationCounting {
             }
         });
 
-        int sum = 0;
-        for (Integer set : configList.values()) {
-            sum += set;
-        }
-        System.out.println("Total number of assignments: " + sum);
+        System.out.println("Total number of assignments: " + binomial(numOfNodes, numOfChannels));
     }
 
     /**
@@ -84,7 +80,7 @@ public class ConfigurationCounting {
         if(n == 0 && k == 0) {
             return 1;
         }
-        else if(n < 0 || k > 0) {
+        else if(n < 0 || k < 0) {
             return 0;
         }
         else {

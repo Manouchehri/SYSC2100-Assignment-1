@@ -6,21 +6,21 @@ public class ConfigurationCounting {
     public static void main(String[] args) {
         Scanner userInput = new Scanner(System.in);
 
-        int numOfNodes = 3;
+        int numOfNodes = 0;
         while (numOfNodes <= 0) { /* Force the user to enter a number greater than 0. */
             System.out.print("Enter the number of nodes: ");
             numOfNodes = userInput.nextInt();
         }
-        int numOfChannels = 3;
+        int numOfChannels = 0;
         while (numOfChannels <= 0) {
             System.out.print("Enter the number of channels: ");
             numOfChannels = userInput.nextInt();
         }
 
-        HashMap<String, Integer> configList = createConfigs(numOfChannels, numOfNodes);
+        HashMap<String, Integer> list = createConfigs(numOfChannels, numOfNodes);
 
         int sum = 0;
-        for (Integer set : configList.values())
+        for (Integer set : list.values())
             sum += set;
         System.out.println("Total number of assignments: " + sum);
     }
@@ -59,6 +59,8 @@ public class ConfigurationCounting {
                 else
                     numberOfConfigs = (numOfOccupanciedChannels - 1) * numOfNodes;
                 
+                /* The reason this is inside createConfigs is to provide instant feedback as each config layout is found. *
+                 * With a large number of channels and/or nodes, it might take a far amount of time to find each layout.  */
                 System.out.println(numberOfConfigs + " set(s) with occupancies: " + currentNodeLayoutString);
                 list.put(currentNodeLayoutString, numberOfConfigs);
             }
@@ -69,7 +71,7 @@ public class ConfigurationCounting {
             if (currentChannel < numOfChannels) { /* Have we gone beyond the number of channels left? */
                 testLayout[currentChannel]++; /* Add a node to the current channel. */
                 createConfigs(numOfChannels, ++currentChannel, numOfNodes,   numOfNodesLeft, currentNodeLayout, list); /* Branch out to the next channel. */
-                createConfigs(numOfChannels, 0,                numOfNodes, --numOfNodesLeft, testLayout,        list); /* Continue with the current node assignment. */
+                createConfigs(numOfChannels, 0, /* Reset. */   numOfNodes, --numOfNodesLeft, testLayout,        list); /* Continue with the current node assignment. */
             }
         }
     }

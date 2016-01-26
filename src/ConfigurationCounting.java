@@ -45,9 +45,9 @@ public class ConfigurationCounting {
         if(numOfNodes <= 0)
             throw new IndexOutOfBoundsException("Number of nodes must be greater than 0.");
 
-        HashMap<String, Integer> configList = new HashMap<>();
-        createConfigs(numOfChannels, 0, numOfNodes, new int[numOfChannels], configList);
-        return configList;
+        HashMap<String, Integer> list = new HashMap<>();
+        createConfigs(numOfChannels, 0, numOfNodes, new int[numOfChannels], list);
+        return list;
     }
 
     private static void createConfigs(int numOfChannels, int currentChannel, int numOfNodesLeft, int[] currentNodeLayout, HashMap<String, Integer> list) {

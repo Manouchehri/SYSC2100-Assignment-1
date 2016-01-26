@@ -19,6 +19,13 @@ public class ConfigurationCounting {
 
         HashMap<String, Integer> list = createConfigs(numOfChannels, numOfNodes);
 
+        list.forEach((layout, occurrence) -> {
+            if (occurrence > 1)
+                System.out.println(occurrence + " sets with occupancies: " + layout);
+            else
+                System.out.println(occurrence + " set with occupancies: " + layout);
+        });
+
         int sum = 0;
         for (Integer set : list.values())
             sum += set;
@@ -38,40 +45,26 @@ public class ConfigurationCounting {
         if(numOfNodes <= 0)
             throw new IndexOutOfBoundsException("Number of nodes must be greater than 0.");
 
-        HashMap<String, Integer> list = new HashMap<>();
-        createConfigs(numOfChannels, 0, numOfNodes, numOfNodes, new int[numOfChannels], list);
-        return list;
+        HashMap<String, Integer> configList = new HashMap<>();
+        createConfigs(numOfChannels, 0, numOfNodes, new int[numOfChannels], configList);
+        return configList;
     }
-    
-    private static void createConfigs(int numOfChannels, int currentChannel, int numOfNodes, int numOfNodesLeft, int[] currentNodeLayout, HashMap<String, Integer> list) {
+
+    private static void createConfigs(int numOfChannels, int currentChannel, int numOfNodesLeft, int[] currentNodeLayout, HashMap<String, Integer> list) {
         if (numOfNodesLeft <= 0) { /* Have all the nodes been assigned yet? */
-            int numOfOccupanciedChannels = 0;
-            for(int x: currentNodeLayout)
-                if(x > 0)
-                    numOfOccupanciedChannels++;
-            
-            String currentNodeLayoutString = Arrays.toString(currentNodeLayout);
-            
-            if(!list.containsKey(currentNodeLayoutString)) { /* If we've already seen this config don't bother doing math. */
-                int numberOfConfigs = 0;
-                if(numOfOccupanciedChannels == 1) /* Base case. */
-                    numberOfConfigs = 1;
-                else
-                    numberOfConfigs = (numOfOccupanciedChannels - 1) * numOfNodes;
-                
-                /* The reason this is inside createConfigs is to provide instant feedback as each config layout is found. *
-                 * With a large number of channels and/or nodes, it might take a far amount of time to find each layout.  */
-                System.out.println(numberOfConfigs + " set(s) with occupancies: " + currentNodeLayoutString);
-                list.put(currentNodeLayoutString, numberOfConfigs);
-            }
+            String holder = Arrays.toString(currentNodeLayout); /* This is a valid configuration, add it to the list. */
+            if (!list.containsKey(holder))
+                list.put(holder, 1); /* This configuration layout has never been seen before, so create it. */
+            else
+                list.replace(holder, list.get(holder) + 1); /* This layout has been seen before, so just increment it. */
         }
         else { /* There's still nodes left to assign. */
             int[] testLayout = new int[currentNodeLayout.length]; /* Create a holder array. */
             System.arraycopy(currentNodeLayout, 0, testLayout, 0, currentNodeLayout.length); /* Copy the array. */
             if (currentChannel < numOfChannels) { /* Have we gone beyond the number of channels left? */
                 testLayout[currentChannel]++; /* Add a node to the current channel. */
-                createConfigs(numOfChannels, ++currentChannel, numOfNodes,   numOfNodesLeft, currentNodeLayout, list); /* Branch out to the next channel. */
-                createConfigs(numOfChannels, 0, /* Reset. */   numOfNodes, --numOfNodesLeft, testLayout,        list); /* Continue with the current node assignment. */
+                createConfigs(numOfChannels, ++currentChannel,   numOfNodesLeft, currentNodeLayout, list); /* Branch out to the next channel. */
+                createConfigs(numOfChannels, 0, /* Reset. */   --numOfNodesLeft, testLayout,        list); /* Continue with the current node assignment. */
             }
         }
     }
